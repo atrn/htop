@@ -222,6 +222,11 @@ static Htop_Reaction actionSortByTime(State* st) {
    return Action_setSortKey(st->settings, TIME);
 }
 
+static Htop_Reaction actionToggleHideIdleProcesses(State* st) {
+   st->settings->hideIdleProcesses = !st->settings->hideIdleProcesses;
+   return HTOP_RECALCULATE | HTOP_SAVE_SETTINGS;
+}
+
 static Htop_Reaction actionToggleKernelThreads(State* st) {
    st->settings->hideKernelThreads = !st->settings->hideKernelThreads;
    return HTOP_RECALCULATE | HTOP_SAVE_SETTINGS;
@@ -431,6 +436,7 @@ static const struct { const char* key; const char* info; } helpLeft[] = {
    { .key = "   F5 t: ", .info = "tree view" },
    { .key = "      p: ", .info = "toggle program path" },
    { .key = "      u: ", .info = "show processes of a single user" },
+   { .key = "      Z: ", .info = "hide/show idle processes" },
    { .key = "      H: ", .info = "hide/show user process threads" },
    { .key = "      K: ", .info = "hide/show kernel threads" },
    { .key = "      F: ", .info = "cursor follows process" },
@@ -570,6 +576,7 @@ void Action_setBindings(Htop_Action* keys) {
    keys['P'] = actionSortByCPU;
    keys['H'] = actionToggleUserlandThreads;
    keys['K'] = actionToggleKernelThreads;
+   keys['Z'] = actionToggleHideIdleProcesses;
    keys['p'] = actionToggleProgramPath;
    keys['t'] = actionToggleTreeView;
    keys[KEY_F(5)] = actionToggleTreeView;

@@ -52,6 +52,7 @@ typedef struct Settings_ {
    bool hideThreads;
    bool shadowOtherUsers;
    bool showThreadNames;
+   bool hideIdleProcesses;
    bool hideKernelThreads;
    bool hideUserlandThreads;
    bool highlightBaseName;
@@ -205,6 +206,8 @@ static bool Settings_read(Settings* this, const char* fileName) {
          this->treeView = atoi(option[1]);
       } else if (String_eq(option[0], "hide_threads")) {
          this->hideThreads = atoi(option[1]);
+      } else if (String_eq(option[0], "hide_idle_processes")) {
+         this->hideIdleProcesses = atoi(option[1]);
       } else if (String_eq(option[0], "hide_kernel_threads")) {
          this->hideKernelThreads = atoi(option[1]);
       } else if (String_eq(option[0], "hide_userland_threads")) {
@@ -319,6 +322,7 @@ bool Settings_write(Settings* this) {
    fprintf(fd, "sort_key=%d\n", (int) this->sortKey-1);
    fprintf(fd, "sort_direction=%d\n", (int) this->direction);
    fprintf(fd, "hide_threads=%d\n", (int) this->hideThreads);
+   fprintf(fd, "hide_idle_processes=%d\n", (int) this->hideIdleProcesses);
    fprintf(fd, "hide_kernel_threads=%d\n", (int) this->hideKernelThreads);
    fprintf(fd, "hide_userland_threads=%d\n", (int) this->hideUserlandThreads);
    fprintf(fd, "shadow_other_users=%d\n", (int) this->shadowOtherUsers);
@@ -359,6 +363,7 @@ Settings* Settings_new(int cpuCount) {
    this->hideThreads = false;
    this->shadowOtherUsers = false;
    this->showThreadNames = false;
+   this->hideIdleProcesses = false;
    this->hideKernelThreads = false;
    this->hideUserlandThreads = false;
    this->treeView = false;
@@ -446,6 +451,7 @@ Settings* Settings_new(int cpuCount) {
    }
    if (!ok) {
       Settings_defaultMeters(this);
+      this->hideIdleProcesses = false;
       this->hideKernelThreads = true;
       this->highlightMegabytes = true;
       this->highlightThreads = true;

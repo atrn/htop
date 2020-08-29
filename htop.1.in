@@ -159,6 +159,10 @@ Quit
 Invert the sort order: if sort order is increasing, switch to decreasing, and
 vice-versa.
 .TP
+.B Z
+Toggle the display of idle processes, those that would display 0.0 for
+their percent CPU use.
+.TP
 .B +, \-
 When in tree view mode, expand or collapse subtree. When a subtree is collapsed
 a "+" sign shows to the left of the process name.

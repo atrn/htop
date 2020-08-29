@@ -363,6 +363,8 @@ void ProcessList_scan(ProcessList* this) {
 
    for (int i = Vector_size(this->processes) - 1; i >= 0; i--) {
       Process* p = (Process*) Vector_get(this->processes, i);
+      if (this->settings->hideIdleProcesses && p->percent_cpu < 0.1f)
+         p->show = false;
       if (p->updated == false)
          ProcessList_remove(this, p);
       else
